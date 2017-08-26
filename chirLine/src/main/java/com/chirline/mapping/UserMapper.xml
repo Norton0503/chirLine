@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chirline.dao.IUserDao">
+	<select id="selectByPrimaryKey" resultType="com.chirline.entity.User" parameterType="int">
+		SELECT
+			ut.id,
+			ut.user_name,
+			ut.`password`,
+			ut.age
+		FROM
+			user_t ut
+		WHERE
+			ut.id = #{userId}
+	</select>  
+</mapper> 

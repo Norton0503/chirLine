@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <listener>  
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>   
+    <!-- 防止Spring内存溢出监听器 -->  
+    <listener>  
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>  
+    </listener>
+    <!--  
+        Spring MVC的核心就是DispatcherServlet，使用springMVC的第一步就是将下面的servlet放入web.xml ，
+        servlet-name属性非常重要，默认情况下，DispatchServlet会加载这个名字-servlet.xml的文件，
+        如下，就会加载 springmvc-servlet.xml，也是在WEN-INF目录下。
+        而这里配置成加载classpath目录下文件，即src/main/resources目录下配置文件。
+    -->  
+    <servlet>  
+        <servlet-name>springmvc</servlet-name>  
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> 
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springmvc-servlet.xml</param-value>
+        </init-param> 
+        <load-on-startup>1</load-on-startup>  
+    </servlet> 
+    <!-- 
+        设置dispatchservlet的匹配模式，通过把dispatchservlet映射到/，这种配置就是REST风格；
+        其带来rest风格优势的同时，也意味着默认servlet会处理所有的请求，包括静态资源（即静态资源会被拦截，
+        若需要配置静态资源不被拦截，请查看下方“五、配置不拦截静态资源”）；
+        而如果不想拦截所有资源的话，可配置成映射到 “*.do” 的方式，这样DispatcherServlet就只会拦截带 “*.do” 后缀的URL,
+        从而不会访问不到静态资源。
+     -->
+    <servlet-mapping>  
+        <servlet-name>springmvc</servlet-name>  
+        <url-pattern>/</url-pattern>  
+    </servlet-mapping> 
+    <!-- 字符集过滤器 -->  
+    <filter>  
+        <filter-name>encodingFilter</filter-name>  
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
+        <init-param>  
+            <param-name>encoding</param-name>  
+            <param-value>UTF-8</param-value>  
+        </init-param>  
+        <init-param>  
+            <param-name>forceEncoding</param-name>  
+            <param-value>true</param-value>  
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>encodingFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>
+</web-app>
